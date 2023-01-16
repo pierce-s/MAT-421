@@ -1,0 +1,538 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "collapsed_sections": [
+        "AxlT-ej5Zfqx",
+        "wPJYq1-mpBzU",
+        "CZ4m48PF1CD3"
+      ],
+      "authorship_tag": "ABX9TyNd3lpmw7C7g+ocZ5ry9cSX",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/pierce-s/MAT-421/blob/main/Module%20A%20(Pierce%20Sarmiento)\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Student: Pierce Sarmiento\n",
+        "\n",
+        "---"
+      ],
+      "metadata": {
+        "id": "3XxRoTpratpc"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "#**Module A** \n",
+        "[**Section 9.1:** Base-N and Binary](#scrollTo=AxlT-ej5Zfqx&line=1&uniqifier=1)\n",
+        "\n",
+        "[**Section 9.2:** Floating Point Numbers](#scrollTo=wPJYq1-mpBzU&line=5&uniqifier=1)\n",
+        "\n",
+        "[**Section 9.3:** Round-off Errors](#scrollTo=CZ4m48PF1CD3&line=4&uniqifier=1)\n",
+        "\n",
+        "---\n",
+        "\n"
+      ],
+      "metadata": {
+        "id": "8n_CHQ3oX3Vj"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "###**Section 9.1: Base-N and Binary**"
+      ],
+      "metadata": {
+        "id": "AxlT-ej5Zfqx"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "*Summary:* \n",
+        "\n",
+        "Typically we use the decimal system, which is base 10, to work with numbers. However, computers make use of base 2 numbers, or binary. In binary, digits are represented as either 0 or 1. \n",
+        "<br><br>For example, let's examine the decimal number **36**:\n",
+        "<br><br> $36 (base10) = 32 + 4 = (1 * 2^5) + (0 * 2^4) + (0 * 2^3) + (1 * 2^2) + (0 * 2^1) + (0 * 2^0) = 100100 (base2)$\n",
+        "\n",
+        "\n",
+        "---\n",
+        "\n",
+        "\n",
+        "\n"
+      ],
+      "metadata": {
+        "id": "-JZ6QaRva9vL"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "*Implementation:*\n",
+        "\n",
+        "We can write a Python script that converts a decimal number into a binary number using the built-in ```bin``` method."
+      ],
+      "metadata": {
+        "id": "2vC6enOldGam"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "bin(36)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 35
+        },
+        "id": "SdVkY2yoYAIl",
+        "outputId": "a12cd883-762a-466a-9b03-ee9237ceccef"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "'0b100100'"
+            ],
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "string"
+            }
+          },
+          "metadata": {},
+          "execution_count": 59
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "The output is a string representation of the correct binary number. Now lets write a function from scratch that converts a string representation of a binary number to a decimal number:"
+      ],
+      "metadata": {
+        "id": "-IyVgO-depuO"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Takes in a binary number as a string and iterates through each digit to calculate the base10 equivalent \n",
+        "def bin_to_dec(n):\n",
+        "    decimal = 0\n",
+        "    for index, digit in enumerate(n):\n",
+        "        decimal += int(digit) * 2**(len(n) - index - 1)\n",
+        "    return decimal"
+      ],
+      "metadata": {
+        "id": "An5dkiPZhFJG"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Given that $36$ (base10) is $100100$ (base2), inputting ```'100100'``` into the function should return $36$."
+      ],
+      "metadata": {
+        "id": "bWV3_zALn9gf"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "bin_to_dec('100100')"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "dPOjCx_8mnqf",
+        "outputId": "165631dd-f51b-4a4e-88af-e85253e2865a"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "36"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 61
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "\n",
+        "\n",
+        "---\n",
+        "\n",
+        "###**Section 9.2: Floating Point Numbers**"
+      ],
+      "metadata": {
+        "id": "wPJYq1-mpBzU"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "*Summary*:\n",
+        "\n",
+        "Since we often want a representation of numbers that we can understand, we need a way to express binary numbers as such. Thus, we use floating point numbers. Floating point numbers can represent large numbers, more precise numbers, and negative numbers all while using the binary number system. One standard, IEEE754 double precision, uses 64 total bits to do so. Each bit is either a 0 or 1. The first bit indicates the sign of the number (negative or positive). The next 11 bits are part of an exponent, and the remaining 52 bits are part of fractional component. For this we represent a float as follows:\n",
+        "\n",
+        "$n =  (-1)^s \\cdot 2^{e-1023} \\cdot (1 + f)$\n",
+        "\n",
+        "So the float ```0 10000000001 0100000000000000000000000000000000000000000000000000``` in base10 would be equivalent to:\n",
+        "\n",
+        "$(-1)^0 \\cdot 2^{(1*2^{10} + 1 * 2^0 - 1023)} \\cdot (1 + (1* \\frac{1}{2^2}))$<br>\n",
+        "$=1 \\cdot 2^{1024 + 1 - 1023} \\cdot (1 + \\frac{1}{4})$<br>\n",
+        "$= 1 \\cdot 2^{2} \\cdot (\\frac{5}{4})$<br>\n",
+        "$= 4 \\cdot \\frac{5}{4}$<br>\n",
+        "$= 5$\n"
+      ],
+      "metadata": {
+        "id": "M7UI8ZDLphip"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "*Implementation:*\n",
+        "\n",
+        "We can write a Python script that converts an IEEE754 double precision float into a decimal. We will reuse the ```bin_to_dec``` function we wrote before. For the fractional component we only need to make minimal modifications to our ```bin_to_dec``` function."
+      ],
+      "metadata": {
+        "id": "qJVTWshtyx5c"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def bin_to_frac(n):\n",
+        "    frac = 0\n",
+        "    for index, digit in enumerate(n):\n",
+        "        frac += int(digit) * (1 / 2**(index+1))\n",
+        "    return frac"
+      ],
+      "metadata": {
+        "id": "KLevKsy7zOgf"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Now we implement the following representation as a function:\n",
+        "$n =  (-1)^s \\cdot 2^{e-1023} \\cdot (1 + f)$"
+      ],
+      "metadata": {
+        "id": "gKREsPfUzZOJ"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def ieee_to_dec(n):\n",
+        "    n = n.split()\n",
+        "    s = n[0]\n",
+        "    e = n[1]\n",
+        "    f = n[2]\n",
+        "\n",
+        "    sign = (-1)**int(s)\n",
+        "    exp = 2**(bin_to_dec(e) - 1023)\n",
+        "    frac = 1 + bin_to_frac(f)\n",
+        "    return sign * exp * frac"
+      ],
+      "metadata": {
+        "id": "lgi9p5VDzqil"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "So now we simply input a float like ```0 10000000001 0100000000000000000000000000000000000000000000000000``` into our function and it should output the decimal representation."
+      ],
+      "metadata": {
+        "id": "gHxvvkuAzu4P"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "n = \"0 10000000001 0100000000000000000000000000000000000000000000000000\"\n",
+        "\n",
+        "ieee_to_dec(n)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "NDB81RICz7cz",
+        "outputId": "0671e98c-527f-4fc9-919a-e02fc2037a1c"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "5.0"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 52
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#using the \"-12\" example from the book\n",
+        "n = \"1 10000000010 1000000000000000000000000000000000000000000000000000\"\n",
+        "\n",
+        "ieee_to_dec(n)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "_p356eU50gv2",
+        "outputId": "7241b42d-0970-4686-8aa6-cefea9abda04"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "-12.0"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 53
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "\n",
+        "\n",
+        "---\n",
+        "\n",
+        "\n",
+        "###**Section 9.3: Round-off Errors**"
+      ],
+      "metadata": {
+        "id": "CZ4m48PF1CD3"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "*Summary*\n",
+        "\n",
+        "Because floating point numbers have a fractional component in base2, we often cannot represent numbers with complete precision. Additionally, we also are only using a finite number of bytes to represent the number. Thus we must approximate the number when using floating point representations. The difference between the value of the number and its floating point representation is *round-off error*. \n",
+        "\n",
+        "This effect can accumulate as we reuse rounded floating point numbers. This can happen with numbers that have infinitely repeated decimal components to them, such as $\\frac{1}{6}$.  "
+      ],
+      "metadata": {
+        "id": "nMXtHvTl4pOB"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "*Implementation*\n",
+        "\n",
+        "Using $\\frac{1}{6}$ as an example, we can demonstrate accumulated round-off error with a Python script. To do this we will modify the ```add_and_subtract``` function in the book. "
+      ],
+      "metadata": {
+        "id": "YFj5iEWK8BZH"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def accumulate(value,iterations):\n",
+        "    result = value\n",
+        "\n",
+        "    #add 1/6 to initial value repeatedly\n",
+        "    for i in range(iterations):\n",
+        "        result += 1/6\n",
+        "\n",
+        "    #subtract 1/6 to initial value repeatedly\n",
+        "    for i in range(iterations):\n",
+        "        result -= 1/6\n",
+        "\n",
+        "    return result\n",
+        "\n",
+        "#number of iterations\n",
+        "iterations = [1,10,100,1000,10000]\n",
+        "#initial value\n",
+        "iv = [1,2,3]\n",
+        "\n",
+        "#loop through each initial value and try various iteration counts\n",
+        "for v in iv:\n",
+        "    print(f\"\\nInitial value: {v}\")\n",
+        "    for i in iterations:\n",
+        "        print(f\"After {i} iteration{'s' if i > 1 else ''}: {accumulate(v,i)}\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "DtnoTsbg8upx",
+        "outputId": "4bedf93e-234b-414d-c5f6-1f212f091372"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\n",
+            "Initial value: 1\n",
+            "After 1 iteration: 1.0\n",
+            "After 10 iterations: 1.0\n",
+            "After 100 iterations: 1.0\n",
+            "After 1000 iterations: 1.000000000000003\n",
+            "After 10000 iterations: 1.0000000000000582\n",
+            "\n",
+            "Initial value: 2\n",
+            "After 1 iteration: 1.9999999999999998\n",
+            "After 10 iterations: 1.9999999999999998\n",
+            "After 100 iterations: 2.0000000000000004\n",
+            "After 1000 iterations: 2.0000000000000036\n",
+            "After 10000 iterations: 2.0000000000000586\n",
+            "\n",
+            "Initial value: 3\n",
+            "After 1 iteration: 3.0\n",
+            "After 10 iterations: 3.0000000000000004\n",
+            "After 100 iterations: 2.9999999999999996\n",
+            "After 1000 iterations: 3.0000000000000027\n",
+            "After 10000 iterations: 3.0000000000000577\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Here we see that the round-off error accumulates as the number of iterations goes up. This is because $\\frac{1}{6}$ does not have an exact or precise representation in the floating point number representation. A possible solution would be to round ```result``` after each iteration of addition or subtraction. This means that the more iterations there are, the more we would call this function."
+      ],
+      "metadata": {
+        "id": "gXcoCN3J-cCV"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def accumulate(value,iterations):\n",
+        "    result = value\n",
+        "\n",
+        "    #add 1/6 to initial value repeatedly\n",
+        "    for i in range(iterations):\n",
+        "        result += 1/6\n",
+        "        #round result after addition\n",
+        "        result = round(result,5)\n",
+        "\n",
+        "    #subtract 1/6 to initial value repeatedly\n",
+        "    for i in range(iterations):\n",
+        "        result -= 1/6\n",
+        "        #round result after subtraction\n",
+        "        result = round(result,5)\n",
+        "\n",
+        "    return result\n",
+        "\n",
+        "#number of iterations\n",
+        "iterations = [1,10,100,1000,10000]\n",
+        "#initial value\n",
+        "iv = [1,2,3]\n",
+        "\n",
+        "#loop through each initial value and try various iteration counts\n",
+        "for v in iv:\n",
+        "    print(f\"\\nInitial value: {v}\")\n",
+        "    for i in iterations:\n",
+        "        print(f\"After {i} iteration{'s' if i > 1 else ''}: {accumulate(v,i)}\")\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ke7gxWLEAF1l",
+        "outputId": "821580b2-5b96-43b5-9bd3-ac63a9018d38"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\n",
+            "Initial value: 1\n",
+            "After 1 iteration: 1.0\n",
+            "After 10 iterations: 1.0\n",
+            "After 100 iterations: 1.0\n",
+            "After 1000 iterations: 1.0\n",
+            "After 10000 iterations: 1.0\n",
+            "\n",
+            "Initial value: 2\n",
+            "After 1 iteration: 2.0\n",
+            "After 10 iterations: 2.0\n",
+            "After 100 iterations: 2.0\n",
+            "After 1000 iterations: 2.0\n",
+            "After 10000 iterations: 2.0\n",
+            "\n",
+            "Initial value: 3\n",
+            "After 1 iteration: 3.0\n",
+            "After 10 iterations: 3.0\n",
+            "After 100 iterations: 3.0\n",
+            "After 1000 iterations: 3.0\n",
+            "After 10000 iterations: 3.0\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "The result is that the initial value is retained even up to 10,000 iterations. However, we lose precision depending on the parameter we pass into ```round()```. For the purpose of the above function, this suffices."
+      ],
+      "metadata": {
+        "id": "eE6jVNoVAQUT"
+      }
+    }
+  ]
+}
